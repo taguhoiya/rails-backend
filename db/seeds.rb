@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-300.times do
+20.times do
   movie_name = Faker::Movie.title
   running_time = Faker::Number.between(from: 90, to: 180)
   release_year = Faker::Number.between(from: 1960, to: 2021)
@@ -10,7 +10,16 @@
                   adventure documentary suspense thiller fantasy gang mystery history biography human-story]
   release_states = %w[playing closed]
   summary = Faker::Lorem.paragraph(sentence_count: 3..10)
-  movie = Movie.new(movie_name, running_time, release_year, release_date, country, categories, release_states, summary)
+  movie = Movie.new(
+    movie_name: movie_name,
+    running_time: running_time,
+    release_year: release_year,
+    release_date: release_date,
+    country: country,
+    category: categories.sample,
+    release_state: release_states.sample,
+    summary: summary
+  )
   movie.save!
 end
 
