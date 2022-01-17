@@ -6,12 +6,12 @@ lock '3.16.0'
 
 # Capistranoのログの表示に利用する
 set :application, 'rails-backend'
-set :deploy_to, '/var/www/movie_sns/rails-backend/'
+set :deploy_to, '/var/www/rails-backend/'
 
 set :branch, 'main'
 
 # どのリポジトリからアプリをpullするかを指定する
-set :repo_url, 'git@github.com:taguhoiya/movie_sns.git'
+set :repo_url, 'git@github.com:taguhoiya/rails-backend.git'
 
 # バージョンが変わっても共通で参照するディレクトリを指定
 set :linked_dirs,
