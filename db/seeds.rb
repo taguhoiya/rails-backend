@@ -1,48 +1,48 @@
 # frozen_string_literal: true
 
-300.times do
-  movie_name = Faker::Movie.title
-  running_time = Faker::Number.between(from: 90, to: 180)
-  release_year = Faker::Number.between(from: 1960, to: 2021)
-  release_date = Faker::Date.between(from: 2.days.ago, to: Date.today)
-  country = Faker::Nation.nationality
-  categories = %w[non-fiction romance horror war music musical sports SF comedy action
-                  adventure documentary suspense thiller fantasy gang mystery history biography human-story]
-  release_states = %w[playing closed]
-  summary = Faker::Lorem.paragraph(sentence_count: 3..10)
-  movie = Movie.new(
-    movie_name: movie_name,
-    running_time: running_time,
-    release_year: release_year,
-    release_date: release_date,
-    country: country,
-    category: categories.sample,
-    release_state: release_states.sample,
-    summary: summary
-  )
-  movie.save!
-end
+# 300.times do
+#   movie_name = Faker::Movie.title
+#   running_time = Faker::Number.between(from: 90, to: 180)
+#   release_year = Faker::Number.between(from: 1960, to: 2021)
+#   release_date = Faker::Date.between(from: 2.days.ago, to: Date.today)
+#   country = Faker::Nation.nationality
+#   categories = %w[non-fiction romance horror war music musical sports SF comedy action
+#                   adventure documentary suspense thiller fantasy gang mystery history biography human-story]
+#   release_states = %w[playing closed]
+#   summary = Faker::Lorem.paragraph(sentence_count: 3..10)
+#   movie = Movie.new(
+#     movie_name: movie_name,
+#     running_time: running_time,
+#     release_year: release_year,
+#     release_date: release_date,
+#     country: country,
+#     category: categories.sample,
+#     release_state: release_states.sample,
+#     summary: summary
+#   )
+#   movie.save!
+# end
 
-200.times do
-  user_num = User.all.length
-  begin
-    nickname = Faker::FunnyName.name
-    email = Faker::Internet.free_email
-    password = Faker::Internet.password
-    user = User.new(
-      nickname: nickname,
-      email: email,
-      password: password
-    )
-    user.skip_confirmation!
-    user.save!
-  rescue StandardError
-    retry if user_num <= 200
-    raise
-  end
-end
+# 200.times do
+#   user_num = User.all.length
+#   begin
+#     nickname = Faker::FunnyName.name
+#     email = Faker::Internet.free_email
+#     password = Faker::Internet.password
+#     user = User.new(
+#       nickname: nickname,
+#       email: email,
+#       password: password
+#     )
+#     user.skip_confirmation!
+#     user.save!
+#   rescue StandardError
+#     retry if user_num <= 200
+#     raise
+#   end
+# end
 
-900.times do
+600.times do
   mark_num = Mark.all.length
   begin
     score = Faker::Number.between(from: 0.5, to: 5.0).round(1)
@@ -56,7 +56,7 @@ end
     )
     mark.save!
   rescue StandardError
-    retry if mark_num <= 200
+    retry if mark_num <= 900
     raise
   end
 end
