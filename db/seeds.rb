@@ -95,7 +95,7 @@ end
     )
     favorite.save!
   rescue StandardError
-    retry if favo_num <= 3000
+    retry if favo_num <= 1600
     raise
   end
 end
