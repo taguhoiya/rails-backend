@@ -42,24 +42,24 @@
 #   end
 # end
 
-600.times do
-  mark_num = Mark.all.length
-  begin
-    score = Faker::Number.between(from: 0.5, to: 5.0).round(1)
-    contents = %w[最高でした。 まずまずでした。 あんまり面白くなかった。 個人的には面白かった。 物語は面白かったが、もう少し音響やCGに拘るべきだ。
-                  時間を無駄にした気分です。 とにかく俳優陣がイケメンでした。 ２度とみる気が起きません。 この監督の次回作が楽しみです。 すごく面白かった。続編も絶対見に行く。]
-    mark = Mark.new(
-      score: score,
-      content: contents.sample,
-      movie_id: Random.rand(1..300),
-      user_id: Random.rand(1..200)
-    )
-    mark.save!
-  rescue StandardError
-    retry if mark_num <= 900
-    raise
-  end
-end
+# 600.times do
+#   mark_num = Mark.all.length
+#   begin
+#     score = Faker::Number.between(from: 0.5, to: 5.0).round(1)
+#     contents = %w[最高でした。 まずまずでした。 あんまり面白くなかった。 個人的には面白かった。 物語は面白かったが、もう少し音響やCGに拘るべきだ。
+#                   時間を無駄にした気分です。 とにかく俳優陣がイケメンでした。 ２度とみる気が起きません。 この監督の次回作が楽しみです。 すごく面白かった。続編も絶対見に行く。]
+#     mark = Mark.new(
+#       score: score,
+#       content: contents.sample,
+#       movie_id: Random.rand(1..300),
+#       user_id: Random.rand(1..200)
+#     )
+#     mark.save!
+#   rescue StandardError
+#     retry if mark_num <= 900
+#     raise
+#   end
+# end
 
 1500.times do
   clip_num = Clip.all.length
