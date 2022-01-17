@@ -1,38 +1,34 @@
-# frozen_string_literal: true
-
-# config valid only for current version of Capistrano
-# capistranoのバージョンを記載。固定のバージョンを利用し続け、バージョン変更によるトラブルを防止する
+# Capistranoのバージョンを指定（初期から記入済み）
 lock '3.16.0'
 
-# Capistranoのログの表示に利用する
+# アプリケーションの指定
 set :application, 'rails-backend'
-set :deploy_to, '/var/www/rails-backend/'
+set :repo_url,  'git@github.com:taguhoiya/rails-backend.git'
 
-set :branch, 'main'
+# sharedディレクトリに入れるファイルを指定
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
 
-# どのリポジトリからアプリをpullするかを指定する
-set :repo_url, 'git@github.com:taguhoiya/rails-backend.git'
+# SSH接続設定
+set :ssh_options, {
+  auth_methods: ['publickey'],
+  keys: ['~/.ssh/taguho.pem']
+}
 
-# バージョンが変わっても共通で参照するディレクトリを指定
-set :linked_dirs,
-    fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system',
-                                 'public/uploads')
+# 保存しておく世代の設定
+set :keep_releases, 5
 
+# rbenvの設定
 set :rbenv_type, :user
 set :rbenv_ruby, '3.0.2'
 
-# どの公開鍵を利用してデプロイするか
-set :ssh_options, auth_methods: ['publickey'],
-                  keys: ['~/.ssh/taguho.pem']
-
-# プロセス番号を記載したファイルの場所
+# ここからUnicornの設定
+# Unicornのプロセスの指定
 set :unicorn_pid, -> { "#{shared_path}/tmp/pids/unicorn.pid" }
 
-# Unicornの設定ファイルの場所
+# Unicornの設定ファイルの指定
 set :unicorn_config_path, -> { "#{current_path}/config/unicorn.rb" }
-set :keep_releases, 5
 
-# デプロイ処理が終わった後、Unicornを再起動するための記述
+# Unicornを再起動するための記述
 after 'deploy:publishing', 'deploy:restart'
 namespace :deploy do
   task :restart do

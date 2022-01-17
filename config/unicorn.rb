@@ -1,26 +1,25 @@
 # frozen_string_literal: true
 
-# rootパスのディレクトリを指定
-root_path = File.expand_path('../../', __FILE__)
+# rootパスのディレクトリを指定（「../」が先頭に追加）
+root_path = File.expand_path('../../../', __FILE__)
 
 # アプリケーションサーバの性能を決定する
 worker_processes 2
 
-# アプリケーションの設置されているディレクトリを指定
-working_directory root_path
+# アプリケーションの設置されているディレクトリを指定（current内に変更）
+working_directory "#{root_path}/current"
 
-# プロセスIDの保存先を指定
-pid "#{root_path}/tmp/pids/unicorn.pid"
+# プロセスIDの保存先を指定（shared内に変更）
+pid "#{root_path}/shared/tmp/pids/unicorn.pid"
 
-# ポート番号を指定
-listen "#{root_path}/tmp/sockets/unicorn.sock"
+# ポート番号を指定（shared内に変更）
+listen "#{root_path}/shared/tmp/sockets/unicorn.sock"
 
-# エラーのログを記録するファイルを指定
-stderr_path "#{root_path}/log/unicorn.stderr.log"
+# エラーのログを記録するファイルを指定（shared内に変更）
+stderr_path "#{root_path}/shared/log/unicorn.stderr.log"
 
-# 通常のログを記録するファイルを指定
-stdout_path "#{root_path}/log/unicorn.stdout.log"
-
+# 通常のログを記録するファイルを指定（shared内に変更）
+stdout_path "#{root_path}/shared/log/unicorn.stdout.log"
 
 # 応答時間を待つ上限時間を設定
 timeout 30
