@@ -393,7 +393,6 @@ DEPENDENCIES
   rubocop-rspec
   solargraph
   spring
-  sprockets
   tzinfo-data
   unicorn
 
