@@ -3,11 +3,11 @@ lock '3.16.0'
 
 # アプリケーションの指定
 set :application, 'rails-backend'
-set :repo_url,  'git@github.com:taguhoiya/rails-backend.git'
+set :repo_url, 'git@github.com:taguhoiya/rails-backend.git'
 set :branch, 'main'
 
 # sharedディレクトリに入れるファイルを指定
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads'
 
 # SSH接続設定
 set :ssh_options, {
