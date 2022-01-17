@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-20.times do
+300.times do
   movie_name = Faker::Movie.title
   running_time = Faker::Number.between(from: 90, to: 180)
   release_year = Faker::Number.between(from: 1960, to: 2021)
