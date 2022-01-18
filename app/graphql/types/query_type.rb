@@ -21,9 +21,18 @@ module Types
       argument :page, Integer, required: false
       argument :limit, Integer, required: false
     end
+    field :search_marks, Types::SearchMarksType.connection_type, null: false do
+      # argument :category, String,  required: false
+      argument :page, Integer, required: false
+      argument :limit, Integer, required: false
+    end
 
     def search_movies(page: 1, limit: 10)
       Movie.all
+    end
+
+    def search_marks(page: 1, limit: 10)
+      Mark.all
     end
   end
 end

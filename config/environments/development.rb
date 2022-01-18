@@ -38,8 +38,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # config.action_mailer.default_options = { from: Rails.application.credentials.mailer[:email] }
-  config.action_mailer.default_url_options = { host: 'localhost:3001/' }
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.default_url_options = { host: 'http://www.moview-ori.com/' }
+  config.action_mailer.delivery_method = :aws_sdk
 
   # config.action_mailer.smtp_settings = {
   #   address: 'smtp.gmail.com',

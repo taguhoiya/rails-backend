@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Capistranoのバージョンを指定（初期から記入済み）
 lock '3.16.0'
 
