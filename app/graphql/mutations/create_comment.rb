@@ -11,6 +11,8 @@ module Mutations
     argument :user_id, ID, required: true
 
     def resolve(**args)
+      raise StandardError if args[:content].empty?
+
       mark = Mark.find(args[:mark_id])
       user = User.find(args[:user_id])
       comment = mark.comments.build(mark_id: args[:mark_id], user_id: args[:user_id], content: args[:content])
