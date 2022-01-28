@@ -17,18 +17,22 @@ module Types
     field :users, resolver: Resolvers::UserAllResolver
     field :mark, resolver: Resolvers::MarkResolver
     field :search_movies, Types::SearchMoviesType.connection_type, null: false do
-      # argument :category, String,  required: false
+      argument :category, String,  required: false
       argument :page, Integer, required: false
       argument :limit, Integer, required: false
     end
     field :search_marks, Types::SearchMarksType.connection_type, null: false do
-      # argument :category, String,  required: false
       argument :page, Integer, required: false
       argument :limit, Integer, required: false
     end
 
-    def search_movies(page: 1, limit: 10)
-      Movie.all
+    def search_movies(page: 1, limit: 10, category:)
+      if not category.empty?
+        Movie.where(category: category)
+      else
+        Movie.all
+      end
+  
     end
 
     def search_marks(page: 1, limit: 10)
