@@ -18,17 +18,17 @@ class User < ActiveRecord::Base
 
   has_one_attached :file
 
-  # ユーザーをフォローする、後ほどcontrollerで使用します。
+  # ユーザーをフォローする、後ほどcontrollerで使用
   def follow(user_id)
     follower.create(followed_id: user_id)
   end
 
-  # ユーザーのフォローを外す、後ほどcontrollerで使用します。
+  # ユーザーのフォローを外す、後ほどcontrollerで使用
   def unfollow(user_id)
     follower.find_by(followed_id: user_id).destroy
   end
 
-  # フォローしていればtrueを返す、後ほどviewで使用します。
+  # フォローしていればtrueを返す、後ほどviewで使用
   def following?(user)
     following_user.include?(user)
   end
