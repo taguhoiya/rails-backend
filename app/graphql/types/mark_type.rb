@@ -25,5 +25,8 @@ module Types
     def favorites
       Loaders::AssociationLoader.for(Mark, :favorites).load(object)
     end
+    def user
+      Loaders::AssociationLoader.for(Mark, :user).load(object)
+    end
   end
 end

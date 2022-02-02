@@ -16,13 +16,5 @@ module Types
     def followed
       Loaders::AssociationLoader.for(User, :followed).load(object)
     end
-
-    def following_user
-      Loaders::AssociationLoader.for(User, :following_user).load(object)
-    end
-
-    def follower_user
-      Loaders::AssociationLoader.for(User, :follower_user).load(object)
-    end
   end
 end

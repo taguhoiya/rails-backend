@@ -28,8 +28,11 @@ module Types
     field :favorites, [Types::FavoriteType], null: false
     field :follower, [Types::RelationshipType], null: false
     field :followed, [Types::RelationshipType], null: false
+    field :following_user, [Types::UserType], null: false
+    field :follower_user, [Types::UserType], null: false
     field :path, String, null: true
     field :content_type, String, null: true
+    field :self_intro, String, null: true
 
     def clips
       Loaders::AssociationLoader.for(User, :clips).load(object)
@@ -49,6 +52,22 @@ module Types
 
     def favorites
       Loaders::AssociationLoader.for(User, :favorites).load(object)
+    end
+
+    def follower
+      Loaders::AssociationLoader.for(User, :follower).load(object)
+    end
+
+    def followed
+      Loaders::AssociationLoader.for(User, :followed).load(object)
+    end
+
+    def following_user
+      Loaders::AssociationLoader.for(User, :following_user).load(object)
+    end
+
+    def follower_user
+      Loaders::AssociationLoader.for(User, :follower_user).load(object)
     end
   end
 end

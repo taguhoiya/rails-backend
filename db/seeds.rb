@@ -61,65 +61,71 @@
 #   end
 # end
 
-1500.times do
-  clip_num = Clip.all.length
-  begin
-    clip = Clip.new(
-      movie_id: Random.rand(1..300),
-      user_id: Random.rand(1..200)
-    )
-    clip.save!
-  rescue StandardError
-    retry if clip_num <= 1500
-    raise
-  end
-end
+# 1500.times do
+#   clip_num = Clip.all.length
+#   begin
+#     clip = Clip.new(
+#       movie_id: Random.rand(1..300),
+#       user_id: Random.rand(1..200)
+#     )
+#     clip.save!
+#   rescue StandardError
+#     retry if clip_num <= 1500
+#     raise
+#   end
+# end
 
-500.times do
-  contents = %w[わかります。 それは知りませんでした。 本当ですか？見に行こうかな〜 あんまり評判良くない気がしたんですが、そうではないみたいですね。 この監督が脚本をしている作品も是非見てみてください
-                主演の〇〇ちゃん、とにかく可愛かったですよね。 それは草。 出直してこい。 www。 大草原不可避。]
-  comment = Comment.new(
-    content: contents.sample,
-    user_id: Random.rand(1..200),
-    mark_id: Random.rand(1..900)
-  )
-  comment.save!
-end
+# 500.times do
+#   contents = %w[わかります。 それは知りませんでした。 本当ですか？見に行こうかな〜 あんまり評判良くない気がしたんですが、そうではないみたいですね。 この監督が脚本をしている作品も是非見てみてください
+#                 主演の〇〇ちゃん、とにかく可愛かったですよね。 それは草。 出直してこい。 www。 大草原不可避。]
+#   comment = Comment.new(
+#     content: contents.sample,
+#     user_id: Random.rand(1..200),
+#     mark_id: Random.rand(1..900)
+#   )
+#   comment.save!
+# end
 
-1600.times do
-  favo_num = Favorite.all.length
-  begin
-    favorite = Favorite.new(
-      user_id: Random.rand(1..200),
-      mark_id: Random.rand(1..900)
-    )
-    favorite.save!
-  rescue StandardError
-    retry if favo_num <= 1600
-    raise
-  end
-end
+# 1600.times do
+#   favo_num = Favorite.all.length
+#   begin
+#     favorite = Favorite.new(
+#       user_id: Random.rand(1..200),
+#       mark_id: Random.rand(1..900)
+#     )
+#     favorite.save!
+#   rescue StandardError
+#     retry if favo_num <= 1600
+#     raise
+#   end
+# end
 
-array = []
-fac = [*(1..200)].combination(2).to_a
-while array.size < 1000
-  array << fac.sample
-  array.uniq!
-end
-i = 0
-while i < 1000
-  rela_num = Relationship.all.length
-  begin
-    follower_id = array[i][0]
-    followed_id = array[i][1]
-    relationship = Relationship.new(
-      follower_id: follower_id,
-      followed_id: followed_id
-    )
-    relationship.save!
-  rescue StandardError
-    retry if rela_num < 1000
-    raise
-  end
+# array = []
+# fac = [*(1..200)].combination(2).to_a
+# while array.size < 1000
+#   array << fac.sample
+#   array.uniq!
+# end
+# i = 0
+# while i < 1000
+#   rela_num = Relationship.all.length
+#   begin
+#     follower_id = array[i][0]
+#     followed_id = array[i][1]
+#     relationship = Relationship.new(
+#       follower_id: follower_id,
+#       followed_id: followed_id
+#     )
+#     relationship.save!
+#   rescue StandardError
+#     retry if rela_num < 1000
+#     raise
+#   end
+#   i += 1
+# end
+i = 1
+300.times do
+  self_intro = Faker::Lorem.paragraph(sentence_count: 1..4)
+  User.find(i).update!(self_intro: self_intro)
   i += 1
 end

@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
 
   has_one_attached :file
 
+  validates :self_intro, length: { maximum: 60 }
+
   # ユーザーをフォローする、後ほどcontrollerで使用
   def follow(user_id)
     follower.create(followed_id: user_id)
@@ -39,8 +41,6 @@ class User < ActiveRecord::Base
 
   def path
     return '' unless file.attached?
-
-    User.includes([:file_attachment])
     Rails.application.routes.url_helpers.rails_storage_proxy_path(file, only_path: true)
   end
 
