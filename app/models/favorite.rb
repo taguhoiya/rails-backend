@@ -3,6 +3,7 @@
 class Favorite < ApplicationRecord
   belongs_to :mark
   belongs_to :user
-  validates :num, numericality: { only_integer: true }
+  has_many :notifications, dependent: :destroy
+
   validates :mark_id, presence: true, uniqueness: { scope: :user_id }
 end

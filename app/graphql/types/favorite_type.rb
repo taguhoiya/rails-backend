@@ -6,6 +6,9 @@ module Types
     field :num, Integer, null: false
     field :user, Types::UserType, null: false
     field :mark, Types::MarkType, null: false
+    field :user_id, Integer, null: false
+    field :mark_id, Integer, null: false
+    field :notifications, [Types::NotificationType], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     def user
@@ -14,6 +17,10 @@ module Types
 
     def mark
       Loaders::AssociationLoader.for(Favorite, :mark).load(object)
+    end
+
+    def notifications
+      Loaders::AssociationLoader.for(Favorite, :notifications).load(object)
     end
   end
 end

@@ -3,7 +3,6 @@
 module Types
   class MarkType < Types::BaseObject
     field :id, ID, null: false
-    field :num, Integer, null: false
     field :score, Float, null: true
     field :content, String, null: false
     field :movie, Types::MovieType, null: true
@@ -14,6 +13,7 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :comments, [Types::CommentType], null: false
     field :favorites, [Types::FavoriteType], null: false
+    field :notifications, [Types::NotificationType], null: false
     def movie
       Loaders::AssociationLoader.for(Mark, :movie).load(object)
     end
@@ -25,8 +25,13 @@ module Types
     def favorites
       Loaders::AssociationLoader.for(Mark, :favorites).load(object)
     end
+
     def user
       Loaders::AssociationLoader.for(Mark, :user).load(object)
+    end
+
+    def notifications
+      Loaders::AssociationLoader.for(Mark, :notifications).load(object)
     end
   end
 end

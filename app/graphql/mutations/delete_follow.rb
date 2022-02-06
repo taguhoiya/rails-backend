@@ -11,6 +11,8 @@ module Mutations
       followed = User.find(args[:followed_id])
       follower = User.find(args[:follower_id])
       follower.unfollow(args[:followed_id])
+      noti = Notification.find_by(visited_id: follower.id, visitor_id: followed.id, action: 'follow')
+      noti.destroy!
       {
         follower: follower,
         followed: followed

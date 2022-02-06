@@ -2,6 +2,7 @@
 
 module Types
   class MutationType < Types::BaseObject
+    field :update_noti_check, mutation: Mutations::UpdateNotiCheck
     field :delete_follow, mutation: Mutations::DeleteFollow
     field :create_follow, mutation: Mutations::CreateFollow
     field :delete_mark, mutation: Mutations::DeleteMark

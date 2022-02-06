@@ -33,6 +33,8 @@ module Types
     field :path, String, null: true
     field :content_type, String, null: true
     field :self_intro, String, null: true
+    field :active_notifications, [Types::NotificationType], null: true
+    field :passive_notifications, [Types::NotificationType], null: true
 
     def clips
       Loaders::AssociationLoader.for(User, :clips).load(object)
@@ -68,6 +70,14 @@ module Types
 
     def follower_user
       Loaders::AssociationLoader.for(User, :follower_user).load(object)
+    end
+
+    def active_notifications
+      Loaders::AssociationLoader.for(User, :active_notifications).load(object)
+    end
+
+    def passive_notifications
+      Loaders::AssociationLoader.for(User, :passive_notifications).load(object)
     end
   end
 end

@@ -11,6 +11,7 @@ module Mutations
       followed = User.find(args[:followed_id])
       follower = User.find(args[:follower_id])
       follower.follow(args[:followed_id])
+      followed.create_notification_follow!(follower)
       {
         follower: follower,
         followed: followed

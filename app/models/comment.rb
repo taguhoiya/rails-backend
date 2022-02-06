@@ -3,6 +3,7 @@
 class Comment < ApplicationRecord
   belongs_to :mark
   belongs_to :user
+  has_many :notifications, dependent: :destroy
+
   validates :content, length: { maximum: 500 }
-  validates :num, numericality: { only_integer: true }
 end

@@ -3,7 +3,6 @@
 module Types
   class ClipType < Types::BaseObject
     field :id, ID, null: false
-    field :num, Integer, null: true
     field :movie_id, ID, null: true
     field :user_id, ID, null: true
     field :movie, Types::MovieType, null: true

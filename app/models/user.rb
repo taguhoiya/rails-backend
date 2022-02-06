@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
   has_many :following_user, through: :follower, source: :followed # 自分がフォローしている人
   has_many :follower_user, through: :followed, source: :follower # 自分をフォローしている人
 
+  has_many :active_notifications, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
+  has_many :passive_notifications, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
+
   has_one_attached :file
 
   validates :self_intro, length: { maximum: 60 }
@@ -41,6 +44,7 @@ class User < ActiveRecord::Base
 
   def path
     return '' unless file.attached?
+
     Rails.application.routes.url_helpers.rails_storage_proxy_path(file, only_path: true)
   end
 
@@ -48,5 +52,16 @@ class User < ActiveRecord::Base
     return '' unless file.attached?
 
     file.content_type
+  end
+
+  def create_notification_follow!(current_user)
+    temp = Notification.where(['visitor_id = ? and visited_id = ? and action = ? ', current_user.id, id, 'follow'])
+    if temp.blank?
+      notification = current_user.active_notifications.new(
+        visited_id: id,
+        action: 'follow'
+      )
+      notification.save if notification.valid?
+    end
   end
 end

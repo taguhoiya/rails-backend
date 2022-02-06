@@ -18,6 +18,7 @@ module Mutations
       comment = mark.comments.build(mark_id: args[:mark_id], user_id: args[:user_id], content: args[:content])
       comment.save!
       comme_h = comment.attributes
+      mark.create_notification_comment!(user, comment.id)
       {
         comment: comme_h,
         mark: mark,

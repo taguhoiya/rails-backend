@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_202_121_830) do
+ActiveRecord::Schema.define(version: 20_220_205_224_328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
   end
 
   create_table 'clips', force: :cascade do |t|
-    t.integer 'num', default: 0, null: false
     t.bigint 'movie_id', null: false
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
@@ -56,7 +55,6 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
   end
 
   create_table 'comments', force: :cascade do |t|
-    t.integer 'num', default: 0, null: false
     t.text 'content', null: false
     t.bigint 'user_id', null: false
     t.bigint 'mark_id', null: false
@@ -67,7 +65,6 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
   end
 
   create_table 'favorites', force: :cascade do |t|
-    t.integer 'num', default: 0, null: false
     t.bigint 'user_id', null: false
     t.bigint 'mark_id', null: false
     t.datetime 'created_at', precision: 6, null: false
@@ -77,7 +74,6 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
   end
 
   create_table 'mark_drafts', force: :cascade do |t|
-    t.integer 'num', default: 0, null: false
     t.float 'score', default: 0.0, null: false
     t.text 'content'
     t.bigint 'movie_id', null: false
@@ -89,7 +85,6 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
   end
 
   create_table 'marks', force: :cascade do |t|
-    t.integer 'num', default: 0, null: false
     t.float 'score', default: 0.0, null: false
     t.text 'content'
     t.bigint 'movie_id', null: false
@@ -112,6 +107,21 @@ ActiveRecord::Schema.define(version: 20_220_202_121_830) do
     t.string 'release_state', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+  end
+
+  create_table 'notifications', force: :cascade do |t|
+    t.integer 'visitor_id', null: false
+    t.integer 'visited_id', null: false
+    t.integer 'mark_id'
+    t.integer 'comment_id'
+    t.string 'action', default: '', null: false
+    t.boolean 'checked', default: false, null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['comment_id'], name: 'index_notifications_on_comment_id'
+    t.index ['mark_id'], name: 'index_notifications_on_mark_id'
+    t.index ['visited_id'], name: 'index_notifications_on_visited_id'
+    t.index ['visitor_id'], name: 'index_notifications_on_visitor_id'
   end
 
   create_table 'relationships', force: :cascade do |t|

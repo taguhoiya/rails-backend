@@ -3,7 +3,6 @@
 module Types
   class MarkDraftType < Types::BaseObject
     field :id, ID, null: false
-    field :num, Integer, null: false
     field :score, Float, null: false
     field :content, String, null: true
     field :movies, [Types::MovieType], null: false
