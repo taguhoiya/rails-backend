@@ -14,12 +14,9 @@ module Mutations
       user = User.find(args[:user_id])
       favo = mark.favorites.build(mark_id: args[:mark_id], user_id: args[:user_id])
       favo.save!
-      favo_h = favo.attributes
       mark.create_notification_favo!(user)
       {
-        favorite: favo_h,
-        mark: mark,
-        user: user
+        favorite: favo
       }
     end
   end

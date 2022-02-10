@@ -10,14 +10,10 @@ module Mutations
     argument :user_id, ID, required: true
     def resolve(**args)
       movie = Movie.find(args[:movie_id])
-      user = User.find(args[:user_id])
       clip = movie.clips.build(movie_id: args[:movie_id], user_id: args[:user_id])
       clip.save!
-      clip_h = clip.attributes
       {
-        clip: clip_h,
-        movie: movie,
-        user: user
+        clip: clip
       }
     end
   end

@@ -12,14 +12,10 @@ module Mutations
     argument :user_id, ID, required: true
     def resolve(**args)
       movie = Movie.find(args[:movie_id])
-      user = User.find(args[:user_id])
       mark = movie.marks.build(score: args[:score], content: args[:content], user_id: args[:user_id])
       mark.save!
-      mark_h = mark.attributes
       {
-        mark: mark_h,
-        movie: movie,
-        user: user
+        mark: mark
       }
     end
   end
