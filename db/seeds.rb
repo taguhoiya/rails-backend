@@ -1,11 +1,10 @@
-frozen_string_literal: true
+# frozen_string_literal: true
 
 300.times do
   movie_name = Faker::Movie.title
   running_time = Faker::Number.between(from: 90, to: 180)
   release_year = Faker::Number.between(from: 1960, to: 2021)
   release_date = Faker::Date.between(from: 2.days.ago, to: Date.today)
-  self_intro = Faker::Lorem.paragraph(sentence_count: 1..4)
   country = Faker::Nation.nationality
   categories = %w[non-fiction romance horror war music musical sports SF comedy action
                   adventure documentary suspense thiller fantasy gang mystery history biography human-story]
@@ -17,7 +16,6 @@ frozen_string_literal: true
     release_year: release_year,
     release_date: release_date,
     country: country,
-    self_intro: self_intro,
     category: categories.sample,
     release_state: release_states.sample,
     summary: summary
@@ -30,11 +28,13 @@ end
   begin
     nickname = Faker::FunnyName.name
     email = Faker::Internet.free_email
+    self_intro = Faker::Lorem.paragraph(sentence_count: 1..4)
     password = Faker::Internet.password
     user = User.new(
       nickname: nickname,
       email: email,
-      password: password
+      password: password,
+      self_intro: self_intro
     )
     user.skip_confirmation!
     user.save!
@@ -58,7 +58,7 @@ end
     )
     mark.save!
   rescue StandardError
-    retry if mark_num <= 900
+    retry if mark_num <= 600
     raise
   end
 end
@@ -83,7 +83,7 @@ end
   comment = Comment.new(
     content: contents.sample,
     user_id: Random.rand(1..200),
-    mark_id: Random.rand(1..900)
+    mark_id: Random.rand(1..600)
   )
   comment.save!
 end
@@ -93,7 +93,7 @@ end
   begin
     favorite = Favorite.new(
       user_id: Random.rand(1..200),
-      mark_id: Random.rand(1..900)
+      mark_id: Random.rand(1..600)
     )
     favorite.save!
   rescue StandardError
@@ -109,7 +109,7 @@ while array.size < 1000
   array.uniq!
 end
 i = 0
-while i < 1000
+while i < 1200
   rela_num = Relationship.all.length
   begin
     follower_id = array[i][0]
@@ -120,7 +120,7 @@ while i < 1000
     )
     relationship.save!
   rescue StandardError
-    retry if rela_num < 1000
+    retry if rela_num < 1200
     raise
   end
   i += 1
