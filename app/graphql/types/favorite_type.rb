@@ -3,7 +3,6 @@
 module Types
   class FavoriteType < Types::BaseObject
     field :id, ID, null: false
-    field :num, Integer, null: false
     field :user, Types::UserType, null: false
     field :mark, Types::MarkType, null: false
     field :user_id, Integer, null: false

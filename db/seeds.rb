@@ -104,7 +104,7 @@ end
 
 array = []
 fac = [*(1..200)].combination(2).to_a
-while array.size < 1000
+while array.size < 1200
   array << fac.sample
   array.uniq!
 end
