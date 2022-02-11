@@ -3,9 +3,9 @@
 class RailsBackendSchema < GraphQL::Schema
   # rescue_from(StandardError) { 'INTERNbAL_SERVER_ERROR' }
   # FOR DEBUGGING
-  # rescue_from(StandardError) do |message|
-  #   GraphQL::ExecutionError.new(message, extensions: { code: 'INTERNAL_SERVER_ERROR' })
-  # end
+  rescue_from(StandardError) do |message|
+    GraphQL::ExecutionError.new(message, extensions: { code: 'INTERNAL_SERVER_ERROR' })
+  end
   mutation(Types::MutationType)
   query(Types::QueryType)
 
