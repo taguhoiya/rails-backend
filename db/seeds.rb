@@ -120,8 +120,9 @@ while i < 1200
     )
     relationship.save!
   rescue StandardError
+    return if rela_num = 1200
+
     retry if rela_num < 1200
-    raise
   end
   i += 1
 end
