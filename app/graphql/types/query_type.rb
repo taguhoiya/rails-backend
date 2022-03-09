@@ -10,11 +10,11 @@ module Types
     field :movie, resolver: Resolvers::MovieResolver
     field :movies, resolver: Resolvers::MoviesResolver
     field :movies_all, resolver: Resolvers::MoviesAllResolver
-    field :all_categories, resolver: Resolvers::MovieCategoriesResolver
     field :user_image, resolver: Resolvers::UserImageResolver
     field :public_user, resolver: Resolvers::PublicUser
     field :users, resolver: Resolvers::UserAllResolver
     field :mark, resolver: Resolvers::MarkResolver
+    field :movie_category, resolver: Resolvers::MovieCategoryResolver
     field :search_movies, Types::SearchMoviesType.connection_type, null: false do
       argument :movie_name, String, required: false
       argument :category, String, required: false
@@ -29,9 +29,13 @@ module Types
     def search_movies(category:, movie_name:, page: 1, limit: 10)
       movie_table = Movie.arel_table
       if !category.empty? && !movie_name.empty?
-        Movie.where(category: category).where(movie_table[:movie_name].matches("%#{movie_name}%"))
+        categories = MovieCategory.where("#{category}": true)
+        movie_ids = categories.map(&:movie_id)
+        Movie.where(id: movie_ids).where(movie_table[:movie_name].matches("%#{movie_name}%"))
       elsif !category.empty? && movie_name.empty?
-        Movie.where(category: category)
+        categories = MovieCategory.where("#{category}": true)
+        movie_ids = categories.map(&:movie_id)
+        Movie.where(id: movie_ids)
       elsif category.empty? && !movie_name.empty?
         Movie.where(movie_table[:movie_name].matches("%#{movie_name}%"))
       else

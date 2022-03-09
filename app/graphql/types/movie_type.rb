@@ -4,14 +4,16 @@ module Types
   class MovieType < Types::BaseObject
     field :id, ID, null: false
     field :movie_name, String, null: false
-    field :movie_image, String, null: true
+    field :poster_path, String, null: true
     field :summary, String, null: true
-    field :running_time, Integer, null: false
-    field :release_year, Integer, null: true
-    field :release_date, GraphQL::Types::ISO8601Date, null: true
+    field :runtime, Integer, null: false
+    field :release_year, String, null: true
+    field :release_date, String, null: true
     field :country, String, null: true
     field :category, String, null: true
     field :release_state, String, null: false
+    field :tmdb_id, String, null: true
+    field :homepage, String, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :clips, [Types::ClipType], null: true

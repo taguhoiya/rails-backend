@@ -1,26 +1,95 @@
 # frozen_string_literal: true
 
-300.times do
-  movie_name = Faker::Movie.title
-  running_time = Faker::Number.between(from: 90, to: 180)
-  release_year = Faker::Number.between(from: 1960, to: 2021)
-  release_date = Faker::Date.between(from: 2.days.ago, to: Date.today)
-  country = Faker::Nation.nationality
-  categories = %w[non-fiction romance horror war music musical sports SF comedy action
-                  adventure documentary suspense thiller fantasy gang mystery history biography human-story]
-  release_states = %w[playing closed]
-  summary = Faker::Lorem.paragraph(sentence_count: 3..10)
-  movie = Movie.new(
-    movie_name: movie_name,
-    running_time: running_time,
-    release_year: release_year,
-    release_date: release_date,
-    country: country,
-    category: categories.sample,
-    release_state: release_states.sample,
-    summary: summary
-  )
-  movie.save!
+require 'uri'
+require 'net/http'
+require 'json'
+
+20.times do |time|
+  url = URI("https://api.themoviedb.org/3/movie/popular?api_key=e25a8dc467dee2fa672d2b07daeb1846&page=#{time + 1}")
+  categories = { 28 => 'action', 12 => 'adventure', 16 => 'animation', 35 => 'comedy', 80 => 'crime',
+                 99 => 'documentary', 18 => 'drama', 10_751 => 'family', 14 => 'fantasy', 36 => 'history',
+                 27 => 'horror', 10_402 => 'music', 9648 => 'mystery', 10_749 => 'romance', 878 => 'science_fiction',
+                 10_770 => 'tv_movie', 53 => 'thriller', 10_752 => 'war', 37 => 'western' }
+
+  https = Net::HTTP.new(url.host, url.port)
+  https.use_ssl = true
+
+  request = Net::HTTP::Get.new(url)
+
+  response = https.request(request)
+  movie_array = JSON.parse(response.read_body)
+  movies = movie_array['results']
+  modified_movies = []
+  movies.each do |movie|
+    id = movie['id']
+    genre_ids = movie['genre_ids']
+    i = 0
+    while i < genre_ids.size
+      genre_ids[i] = categories[genre_ids[i]]
+      i += 1
+    end
+    movie_name = movie['title']
+    summary = movie['overview']
+    release_date = movie['release_date']
+    score = movie['vote_average']
+    poster_path = movie['poster_path']
+    modified_movies << [id, movie_name, genre_ids, summary, score, release_date, poster_path]
+  end
+
+  modified_movies.each do |movie|
+    movie_id = movie[0]
+    indi_url = URI("https://api.themoviedb.org/3/movie/#{movie_id}?api_key=e25a8dc467dee2fa672d2b07daeb1846")
+    https = Net::HTTP.new(indi_url.host, indi_url.port)
+    https.use_ssl = true
+
+    indi_request = Net::HTTP::Get.new(indi_url)
+    indi_response = https.request(indi_request)
+    movie_response = JSON.parse(indi_response.read_body)
+
+    runtime = movie_response['runtime']
+    homepage = movie_response['homepage']
+    country = movie_response['production_countries'][0].blank? ? nil : movie_response['production_countries'][0]['name']
+    status = movie_response['status']
+    movie.push(runtime, status, homepage, country)
+
+    tmdb_id = movie[0]
+    movie_name = movie[1]
+    categories = movie[2]
+    summary = movie[3]
+    release_year = movie[5].slice(0..3)
+    release_date = movie[5]
+    poster_path = movie[6]
+    runtime = movie[7]
+    country = movie[-1]
+    homepage = movie[-2]
+    status = movie[-3]
+
+    movie = Movie.new(
+      movie_name: movie_name,
+      poster_path: poster_path,
+      runtime: runtime,
+      release_year: release_year,
+      release_date: release_date,
+      country: country,
+      release_state: status,
+      summary: summary,
+      tmdb_id: tmdb_id,
+      homepage: homepage
+    )
+    movie.save!
+    j = 0
+    while j < categories.size
+      if categories[0].blank?
+        movie_category = MovieCategory.new(movie_id: movie.id)
+      elsif j.zero?
+        movie_category = MovieCategory.new(movie_id: movie.id, "#{categories[j]}": true)
+      else
+        movie_category[categories[j]] = true
+      end
+      j += 1
+    end
+    movie_category.save!
+  end
 end
 
 200.times do
@@ -44,7 +113,7 @@ end
   end
 end
 
-600.times do
+800.times do
   mark_num = Mark.all.length
   begin
     score = Faker::Number.between(from: 0.5, to: 5.0).round(1)
@@ -53,26 +122,26 @@ end
     mark = Mark.new(
       score: score,
       content: contents.sample,
-      movie_id: Random.rand(1..300),
+      movie_id: Random.rand(1..400),
       user_id: Random.rand(1..200)
     )
     mark.save!
   rescue StandardError
-    retry if mark_num <= 600
+    retry if mark_num <= 800
     raise
   end
 end
 
-1500.times do
+1800.times do
   clip_num = Clip.all.length
   begin
     clip = Clip.new(
-      movie_id: Random.rand(1..300),
+      movie_id: Random.rand(1..400),
       user_id: Random.rand(1..200)
     )
     clip.save!
   rescue StandardError
-    retry if clip_num <= 1500
+    retry if clip_num <= 1800
     raise
   end
 end
@@ -83,7 +152,7 @@ end
   comment = Comment.new(
     content: contents.sample,
     user_id: Random.rand(1..200),
-    mark_id: Random.rand(1..600)
+    mark_id: Random.rand(1..800)
   )
   comment.save!
 end
@@ -93,7 +162,7 @@ end
   begin
     favorite = Favorite.new(
       user_id: Random.rand(1..200),
-      mark_id: Random.rand(1..600)
+      mark_id: Random.rand(1..800)
     )
     favorite.save!
   rescue StandardError
@@ -104,12 +173,12 @@ end
 
 array = []
 fac = [*(1..200)].combination(2).to_a
-while array.size < 1200
+while array.size < 1500
   array << fac.sample
   array.uniq!
 end
 i = 0
-while i < 1200
+while i < 1500
   rela_num = Relationship.all.length
   begin
     follower_id = array[i][0]
@@ -120,9 +189,9 @@ while i < 1200
     )
     relationship.save!
   rescue StandardError
-    return if rela_num == 1200
+    return if rela_num == 1500
 
-    retry if rela_num < 1200
+    retry if rela_num < 1500
   end
   i += 1
 end
