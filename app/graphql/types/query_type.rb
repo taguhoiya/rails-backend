@@ -27,17 +27,19 @@ module Types
     end
 
     def search_movies(category:, movie_name:, page: 1, limit: 10)
-      movie_table = Movie.arel_table
+      # sqlインジェクション用
+      search_sql_cate = MovieCategory.sanitize_sql_array(["#{category} = ?", true])
+
       if !category.empty? && !movie_name.empty?
-        categories = MovieCategory.where("#{category}": true)
+        categories = MovieCategory.where(search_sql_cate)
         movie_ids = categories.map(&:movie_id)
-        Movie.where(id: movie_ids).where(movie_table[:movie_name].matches("%#{movie_name}%"))
+        Movie.where(id: movie_ids).where('UPPER(movie_name) LIKE ?', "%#{movie_name.upcase}%")
       elsif !category.empty? && movie_name.empty?
-        categories = MovieCategory.where("#{category}": true)
+        categories = MovieCategory.where(search_sql_cate)
         movie_ids = categories.map(&:movie_id)
         Movie.where(id: movie_ids)
       elsif category.empty? && !movie_name.empty?
-        Movie.where(movie_table[:movie_name].matches("%#{movie_name}%"))
+        Movie.where('UPPER(movie_name) LIKE ?', "%#{movie_name.upcase}%")
       else
         Movie.all
       end

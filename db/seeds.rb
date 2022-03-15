@@ -5,7 +5,7 @@ require 'net/http'
 require 'json'
 
 20.times do |time|
-  url = URI("https://api.themoviedb.org/3/movie/popular?api_key=e25a8dc467dee2fa672d2b07daeb1846&page=#{time + 1}")
+  url = URI("https://api.themoviedb.org/3/movie/popular?#{Rails.application.credentials.tmdb[:api_key]}&page=#{time + 1}")
   categories = { 28 => 'action', 12 => 'adventure', 16 => 'animation', 35 => 'comedy', 80 => 'crime',
                  99 => 'documentary', 18 => 'drama', 10_751 => 'family', 14 => 'fantasy', 36 => 'history',
                  27 => 'horror', 10_402 => 'music', 9648 => 'mystery', 10_749 => 'romance', 878 => 'science_fiction',
@@ -38,7 +38,7 @@ require 'json'
 
   modified_movies.each do |movie|
     movie_id = movie[0]
-    indi_url = URI("https://api.themoviedb.org/3/movie/#{movie_id}?api_key=e25a8dc467dee2fa672d2b07daeb1846")
+    indi_url = URI("https://api.themoviedb.org/3/movie/#{movie_id}?#{Rails.application.credentials.tmdb[:api_key]}")
     https = Net::HTTP.new(indi_url.host, indi_url.port)
     https.use_ssl = true
 
