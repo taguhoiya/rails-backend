@@ -33,6 +33,7 @@ group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'dotenv-rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -62,6 +63,7 @@ gem 'devise_token_auth'
 gem 'solargraph'
 
 gem 'rspec'
+gem 'rspec-rails'
 
 gem 'apollo_upload_server'
 gem 'devise-i18n'
